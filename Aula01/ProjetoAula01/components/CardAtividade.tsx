@@ -1,12 +1,21 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 
-export default function CardAtividade() {
+type CardProps = {
+	id: number,
+	titulo: string,
+	descricao: string,
+	status: string,
+	onPress: (id: number) => void,
+}
+
+export default function CardAtividade({id, titulo, descricao, status, onPress}: CardProps) {
     return(
-        <View style={styles.card}>
-            <Text>Atividade</Text>
-            <Text>Status: Finalizado</Text>
-        </View>
+        <Pressable onPress={() => onPress(id)} style={styles.card}>
+            <Text style={styles.titulo}>{titulo}</Text>
+			<Text style={styles.subtitulo}>{descricao}</Text>
+			<Text style={ status === 'Finalizado' && styles.concluido }>{status}</Text>
+        </Pressable>
     );
 }
 
@@ -19,14 +28,18 @@ const styles = StyleSheet.create({
 	}, 
 	
 	titulo: { 
-		fontSize: 28, 
+		fontSize: 16, 
 		fontWeight: 'bold', 
 	}, 
 	
 	subtitulo: { 
-		fontSize: 20, 
+		fontSize: 14, 
 		marginTop: 20, 
 	}, 
+
+	concluido: {
+		color: '#0f0'
+	},
 	
 	card: { 
 		padding: 15, 
