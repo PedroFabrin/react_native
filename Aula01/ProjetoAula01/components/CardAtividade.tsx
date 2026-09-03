@@ -1,20 +1,28 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
 
 
 type CardProps = {
 	id: number,
 	titulo: string,
 	descricao: string,
-	status: string,
-	onPress: (id: number) => void,
 }
 
-export default function CardAtividade({id, titulo, descricao, status, onPress}: CardProps) {
+export default function CardAtividade({id, titulo, descricao}: CardProps) {
+
+	const [concluida, setConcluida] = useState(false)
+
+	function alterarStatus() {
+		setConcluida(!concluida);
+	}
+
     return(
-        <Pressable onPress={() => onPress(id)} style={styles.card}>
+        <Pressable style={styles.card} onPress={alterarStatus}>
             <Text style={styles.titulo}>{titulo}</Text>
 			<Text style={styles.subtitulo}>{descricao}</Text>
-			<Text style={ status === 'Finalizado' && styles.concluido }>{status}</Text>
+			<Text style={concluida && styles.concluido}>
+				{ concluida ? 'Concluída' : 'Pendente' }
+			</Text>
         </Pressable>
     );
 }

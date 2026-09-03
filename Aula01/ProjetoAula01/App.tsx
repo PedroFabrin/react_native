@@ -4,19 +4,19 @@ import Cabecalho from './components/Cabecalho';
 import CardAtividade from './components/CardAtividade';
 import Botao from './components/Botao';
 import Aluno from './components/Aluno';
-
-function selecionarCard(id: number) {
-	return(console.log("Tarefa Selecionada " + id));
-}
+import Status from './components/Status';
+import Contador from './components/Contador';
 
 export default function App() {
 
   return (
     <View style={styles.container}>
+	  <Contador></Contador>
+	  <Status></Status>
       <Cabecalho />
 	  <Aluno nome='Fabrin' curso='Sistemas de Informação' termo={8} nota={10}/>
-      <CardAtividade id={1} titulo='Atividade01' descricao='Atividade 1' status='Finalizado' onPress={selecionarCard}/>
-      <CardAtividade  id={2} titulo='Atividade02' descricao='Atividade 2' status='Em Andamento' onPress={selecionarCard}/>
+      <CardAtividade id={1} titulo='Atividade01' descricao='Atividade 1' />
+      <CardAtividade  id={2} titulo='Atividade02' descricao='Atividade 2' />
       <Botao />
       <StatusBar style="auto" />
     </View>
