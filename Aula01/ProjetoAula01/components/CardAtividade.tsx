@@ -6,58 +6,57 @@ type CardProps = {
 	id: number,
 	titulo: string,
 	descricao: string,
+	status: string,
+	onDelete: (id: number) => void
 }
 
-export default function CardAtividade({id, titulo, descricao}: CardProps) {
-
-	const [concluida, setConcluida] = useState(false)
-
-	function alterarStatus() {
-		setConcluida(!concluida);
-	}
+export default function CardAtividade({id, titulo, descricao, status, onDelete}: CardProps) {
 
     return(
-        <Pressable style={styles.card} onPress={alterarStatus}>
-            <Text style={styles.titulo}>{titulo}</Text>
-			<Text style={styles.subtitulo}>{descricao}</Text>
-			<Text style={concluida && styles.concluido}>
-				{ concluida ? 'Concluída' : 'Pendente' }
-			</Text>
-        </Pressable>
+        <View style={styles.card}>
+			<Text style={styles.titulo}>{titulo}</Text>
+			<Text style={styles.descricao}>{descricao}</Text>
+			<Text style={styles.status}>{status}</Text>
+			<Pressable style={styles.botaoExcluir} onPress={() => onDelete(id)}>
+				<Text style={styles.textoExcluir}>Excluir</Text>
+			</Pressable>
+		</View>
     );
 }
 
-const styles = StyleSheet.create({ 
-	container: { 
-		flex: 1, 
-		padding: 30, 
-		justifyContent: 'center', 
-		alignItems: 'center'
-	}, 
-	
-	titulo: { 
-		fontSize: 16, 
-		fontWeight: 'bold', 
-	}, 
-	
-	subtitulo: { 
-		fontSize: 14, 
-		marginTop: 20, 
-	}, 
-
-	concluido: {
-		color: '#0f0'
+const styles = StyleSheet.create({
+	card: {
+	  borderWidth: 1,
+	  borderRadius: 8,
+	  padding: 16,
+	  marginBottom: 12,
 	},
-	
-	card: { 
-		padding: 15, 
-		marginTop: 10, 
-		borderWidth: 1, 
-	}, 
-	
-	botao: { 
-		padding: 15, 
-		marginTop: 20, 
-		borderWidth: 1, 
-	}, 
-});
+  
+	titulo: {
+	  fontSize: 18,
+	  fontWeight: 'bold',
+	  marginBottom: 6,
+	},
+  
+	descricao: {
+	  fontSize: 15,
+	  marginBottom: 8,
+	},
+  
+	status: {
+	  fontSize: 14,
+	  fontWeight: 'bold',
+	},
+  
+	botaoExcluir: {
+	  borderWidth: 1,
+	  borderRadius: 6,
+	  padding: 8,
+	  marginTop: 12,
+	  alignItems: 'center',
+	},
+  
+	textoExcluir: {
+	  fontWeight: 'bold',
+	},
+  });
