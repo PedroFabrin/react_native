@@ -7,7 +7,7 @@ type BotaoProps = {
 
 export default function Botao({titulo, onPress}: BotaoProps) {
     return (
-        <Pressable style={styles.botao} onPress={() => "" }>
+        <Pressable style={styles.botao} onPress={onPress}>
             <Text style={styles.texto}> {titulo} </Text>
         </Pressable>
     );
@@ -15,15 +15,22 @@ export default function Botao({titulo, onPress}: BotaoProps) {
 
 const styles = StyleSheet.create({
 	botao: {
-	   borderWidth: 1,
-	   borderRadius: 8,
-	   padding: 12,
+	   backgroundColor: '#3F3F46',
+	   borderRadius: 10,
+	   paddingVertical: 14,
 	   alignItems: 'center',
-	   marginTop: 10,
+	   marginTop: 14,
+	   shadowColor: '#18181B',
+	   shadowOffset: { width: 0, height: 3 },
+	   shadowOpacity: 0.2,
+	   shadowRadius: 6,
+	   elevation: 3,
 	 },
-   
+
 	  texto: {
 	   fontSize: 16,
-	   fontWeight: 'bold',
+	   fontWeight: '700',
+	   color: '#FFFFFF',
+	   letterSpacing: 0.5,
 	 },
 });

@@ -12,14 +12,16 @@ export default function Cabecalho(){
 }
 
 const styles = StyleSheet.create({
-    titulo: { 
-		fontSize: 28, 
-		fontWeight: 'bold', 
-	}, 
-	
-	subtitulo: { 
-		fontSize: 20, 
-		marginTop: 20, 
+    titulo: {
+		fontSize: 28,
+		fontWeight: '800',
+		color: '#27272A',
+	},
+
+	subtitulo: {
+		fontSize: 16,
+		marginTop: 8,
+		color: '#71717A',
 	},
 });
 

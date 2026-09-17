@@ -9,6 +9,7 @@ import Contador from './components/Contador';
 import { useState } from 'react';
 import { Tarefa } from './models/Tarefa';
 import { TextInput } from 'react-native';
+import Flex from './components/Flex';
 
 export default function App() {
 
@@ -61,13 +62,13 @@ export default function App() {
 		setTarefas(novaLista); 
 	}
 
-	return (
+	return (	
 		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 			<FlatList 
 				data={tarefas}
 				keyExtractor={(item) => item.id.toString()} 
 				keyboardShouldPersistTaps='handled' 
-				contentContainerStyle={styles.container}
+				contentContainerStyle={styles.conteudo}
 				
 				ListHeaderComponent={
 					<View>
@@ -106,76 +107,102 @@ export default function App() {
 	)
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
 	container: {
 	  flex: 1,
-	},
-  
-	conteudo: {
-	  padding: 24,
-	  paddingTop: 50,
-	},
-  
-	tituloApp: {
-	  fontSize: 30,
-	  fontWeight: 'bold',
-	  textAlign: 'center',
-	},
-  
-	subtituloApp: {
-	  fontSize: 16,
-	  textAlign: 'center',
-	  marginBottom: 30,
-	},
-  
-	tituloFormulario: {
-	  fontSize: 22,
-	  fontWeight: 'bold',
-	  marginBottom: 15,
-	},
-  
-	label: {
-	  fontSize: 15,
-	  fontWeight: 'bold',
-	  marginTop: 10,
-	  marginBottom: 5,
-	},
-  
-	input: {
-	  borderWidth: 1,
-	  borderRadius: 8,
-	  padding: 12,
-	  fontSize: 16,
-	},
-  
-	inputDescricao: {
-	  minHeight: 80,
-	  textAlignVertical: 'top',
-	},
-  
-	erro: {
-	  marginTop: 10,
-	  fontWeight: 'bold',
-	},
-  
-	tituloLista: {
-	  fontSize: 22,
-	  fontWeight: 'bold',
-	  marginTop: 35,
-	  marginBottom: 15,
-	},
-  
-	listaVazia: {
-	  borderWidth: 1,
-	  borderRadius: 8,
-	  padding: 20,
+	  backgroundColor: '#F4F4F5',
 	  alignItems: 'center',
 	},
-  
-	textoListaVazia: {
-	  fontSize: 17,
-	  fontWeight: 'bold',
-	  marginBottom: 5,
+
+	conteudo: {
+	  width: '100%',
+	  maxWidth: 640,
+	  alignSelf: 'center',
+	  paddingHorizontal: 24,
+	  paddingTop: 56,
+	  paddingBottom: 40,
 	},
-	  
+
+	tituloApp: {
+	  fontSize: 32,
+	  fontWeight: '800',
+	  textAlign: 'center',
+	  color: '#27272A',
+	  letterSpacing: 1,
+	},
+
+	subtituloApp: {
+	  fontSize: 15,
+	  textAlign: 'center',
+	  marginBottom: 32,
+	  color: '#71717A',
+	},
+
+	tituloFormulario: {
+	  fontSize: 20,
+	  fontWeight: '700',
+	  marginBottom: 16,
+	  color: '#27272A',
+	},
+
+	label: {
+	  fontSize: 14,
+	  fontWeight: '600',
+	  marginTop: 12,
+	  marginBottom: 6,
+	  color: '#3F3F46',
+	},
+
+	input: {
+	  borderWidth: 1,
+	  borderColor: '#D4D4D8',
+	  borderRadius: 10,
+	  padding: 12,
+	  fontSize: 16,
+	  backgroundColor: '#FFFFFF',
+	  color: '#27272A',
+	},
+
+	inputDescricao: {
+	  borderWidth: 1,
+	  borderColor: '#D4D4D8',
+	  borderRadius: 10,
+	  padding: 12,
+	  fontSize: 16,
+	  backgroundColor: '#FFFFFF',
+	  color: '#27272A',
+	  minHeight: 90,
+	  textAlignVertical: 'top',
+	},
+
+	erro: {
+	  marginTop: 10,
+	  fontWeight: '600',
+	  color: '#B91C1C',
+	},
+
+	tituloLista: {
+	  fontSize: 20,
+	  fontWeight: '700',
+	  marginTop: 36,
+	  marginBottom: 16,
+	  color: '#27272A',
+	},
+
+	listaVazia: {
+	  borderWidth: 1,
+	  borderColor: '#E4E4E7',
+	  borderRadius: 12,
+	  padding: 24,
+	  alignItems: 'center',
+	  backgroundColor: '#FFFFFF',
+	},
+
+	textoListaVazia: {
+	  fontSize: 16,
+	  fontWeight: '600',
+	  marginBottom: 5,
+	  color: '#71717A',
+	},
+
   });

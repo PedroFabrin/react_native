@@ -26,8 +26,10 @@ export default function Aluno({nome, curso, termo, nota}: AlunoProps){
 const styles = StyleSheet.create({
     linha: {
         fontSize: 16,
+        color: '#1E293B',
     },
     destacar: {
-        color: '#f00'
+        color: '#DC2626',
+        fontWeight: '700',
     }
 })

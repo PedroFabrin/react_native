@@ -26,37 +26,57 @@ export default function CardAtividade({id, titulo, descricao, status, onDelete}:
 
 const styles = StyleSheet.create({
 	card: {
+	  backgroundColor: '#FFFFFF',
 	  borderWidth: 1,
-	  borderRadius: 8,
-	  padding: 16,
-	  marginBottom: 12,
+	  borderColor: '#E4E4E7',
+	  borderRadius: 12,
+	  padding: 18,
+	  marginBottom: 14,
+	  shadowColor: '#18181B',
+	  shadowOffset: { width: 0, height: 2 },
+	  shadowOpacity: 0.05,
+	  shadowRadius: 6,
+	  elevation: 2,
 	},
-  
+
 	titulo: {
 	  fontSize: 18,
-	  fontWeight: 'bold',
+	  fontWeight: '700',
 	  marginBottom: 6,
+	  color: '#27272A',
 	},
-  
+
 	descricao: {
 	  fontSize: 15,
-	  marginBottom: 8,
+	  marginBottom: 10,
+	  color: '#52525B',
+	  lineHeight: 20,
 	},
-  
+
 	status: {
-	  fontSize: 14,
-	  fontWeight: 'bold',
+	  fontSize: 13,
+	  fontWeight: '700',
+	  color: '#3F3F46',
+	  backgroundColor: '#E4E4E7',
+	  alignSelf: 'flex-start',
+	  paddingHorizontal: 10,
+	  paddingVertical: 4,
+	  borderRadius: 999,
+	  overflow: 'hidden',
 	},
-  
+
 	botaoExcluir: {
 	  borderWidth: 1,
-	  borderRadius: 6,
-	  padding: 8,
-	  marginTop: 12,
+	  borderColor: '#E4E4E7',
+	  backgroundColor: '#FAFAFA',
+	  borderRadius: 8,
+	  padding: 10,
+	  marginTop: 14,
 	  alignItems: 'center',
 	},
-  
+
 	textoExcluir: {
-	  fontWeight: 'bold',
+	  fontWeight: '700',
+	  color: '#B91C1C',
 	},
   });
