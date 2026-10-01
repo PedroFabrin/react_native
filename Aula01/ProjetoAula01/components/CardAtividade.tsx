@@ -7,18 +7,18 @@ type CardProps = {
 	titulo: string,
 	descricao: string,
 	status: string,
-	onDelete: (id: number) => void
+	onPress: () => void
 }
 
-export default function CardAtividade({id, titulo, descricao, status, onDelete}: CardProps) {
+export default function CardAtividade({id, titulo, descricao, status, onPress}: CardProps) {
 
     return(
         <View style={styles.card}>
 			<Text style={styles.titulo}>{titulo}</Text>
 			<Text style={styles.descricao}>{descricao}</Text>
 			<Text style={styles.status}>{status}</Text>
-			<Pressable style={styles.botaoExcluir} onPress={() => onDelete(id)}>
-				<Text style={styles.textoExcluir}>Excluir</Text>
+			<Pressable style={styles.botaoExcluir} onPress={onPress}>
+				<Text style={styles.textoExcluir}>Detalhes</Text>
 			</Pressable>
 		</View>
     );
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
 
 	textoExcluir: {
 	  fontWeight: '700',
-	  color: '#B91C1C',
+	  color: '#000000',
 	},
   });

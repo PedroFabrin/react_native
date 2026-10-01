@@ -10,101 +10,141 @@ import { useState } from 'react';
 import { Tarefa } from './models/Tarefa';
 import { TextInput } from 'react-native';
 import Flex from './components/Flex';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import ListaScreen from './screens/ListaScreen';
+import DetalheScreen from './screens/DetalheScreen';
+import EdicaoScreen from './screens/EdicaoScreen';
+import CadastroScreen from './screens/CadastroScreen';
+import { RootStackParamList } from './navigation/types';
 
 export default function App() {
 
-	const[tarefas, setTarefas] = useState<Tarefa[]>([
-		{
-			id: 1,
-			titulo: 'Estudar Desenvolvimento Mobile',
-			descricao: 'Revisar Estados e Propriedades',
-			status: 'Pendente',
-		},
-		{
-			id: 2,
-			titulo: 'Preparar Enade',
-			descricao: 'Revisar Todo o Conteúdo',
-			status: 'Pendente',	
-		}
-	])
+// 	const[tarefas, setTarefas] = useState<Tarefa[]>([
+// 		{
+// 			id: 1,
+// 			titulo: 'Estudar Desenvolvimento Mobile',
+// 			descricao: 'Revisar Estados e Propriedades',
+// 			status: 'Pendente',
+// 		},
+// 		{
+// 			id: 2,
+// 			titulo: 'Preparar Enade',
+// 			descricao: 'Revisar Todo o Conteúdo',
+// 			status: 'Pendente',	
+// 		}
+// 	])
 	
-	const[titulo, setTitulo] = useState('');
-	const[descricao, setDescricao] = useState('');
-	const[erro, setErro] = useState('');
+// 	const[titulo, setTitulo] = useState('');
+// 	const[descricao, setDescricao] = useState('');
+// 	const[erro, setErro] = useState('');
  
-	function cadastrar() {
-		if(titulo.trim() === '' ||
-		descricao.trim() === ''){
-			setErro('Preencha os campos')
-			return;
-		}
+// 	function cadastrar() {
+// 		if(titulo.trim() === '' ||
+// 		descricao.trim() === ''){
+// 			setErro('Preencha os campos')
+// 			return;
+// 		}
 		
-		const novaTarefa: Tarefa = {
-			id: Date.now(),
-			titulo: titulo,
-			descricao: descricao,
-			status: 'Pendente',
-		}
+// 		const novaTarefa: Tarefa = {
+// 			id: Date.now(),
+// 			titulo: titulo,
+// 			descricao: descricao,
+// 			status: 'Pendente',
+// 		}
 
-		setTarefas([
-			...tarefas,
-			novaTarefa
-		]);
+// 		setTarefas([
+// 			...tarefas,
+// 			novaTarefa
+// 		]);
 
-		setTitulo('');
-		setDescricao('');
-		setErro('');
+// 		setTitulo('');
+// 		setDescricao('');
+// 		setErro('');
 		
-	}
+// 	}
 
-	function excluir(id: number){
-		const novaLista = tarefas.filter((tarefa) => tarefa.id !== id);
-		setTarefas(novaLista); 
-	}
+// 	function excluir(id: number){
+// 		const novaLista = tarefas.filter((tarefa) => tarefa.id !== id);
+// 		setTarefas(novaLista); 
+// 	}
 
-	return (	
-		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-			<FlatList 
-				data={tarefas}
-				keyExtractor={(item) => item.id.toString()} 
-				keyboardShouldPersistTaps='handled' 
-				contentContainerStyle={styles.conteudo}
+// 	return (	
+// 		<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+// 			<FlatList 
+// 				data={tarefas}
+// 				keyExtractor={(item) => item.id.toString()} 
+// 				keyboardShouldPersistTaps='handled' 
+// 				contentContainerStyle={styles.conteudo}
 				
-				ListHeaderComponent={
-					<View>
-						<Text style={styles.tituloApp}>TASKLIST</Text>
-						<Text style={styles.subtituloApp}>Gerenciados de Tarefas</Text>
+// 				ListHeaderComponent={
+// 					<View>
+// 						<Text style={styles.tituloApp}>TASKLIST</Text>
+// 						<Text style={styles.subtituloApp}>Gerenciados de Tarefas</Text>
 
-						<Text style={styles.tituloFormulario}>Nova Tarefa</Text>
+// 						<Text style={styles.tituloFormulario}>Nova Tarefa</Text>
 
-						<Text style={styles.label} >Titulo</Text>
-						<TextInput style={styles.input} placeholder='Insira o título' value={titulo} onChangeText={setTitulo}></TextInput>
+// 						<Text style={styles.label} >Titulo</Text>
+// 						<TextInput style={styles.input} placeholder='Insira o título' value={titulo} onChangeText={setTitulo}></TextInput>
 
-						<Text style={styles.label}>Descrição</Text>
-						<TextInput style={styles.inputDescricao} placeholder='Insira a descrição' value={descricao} onChangeText={setDescricao}></TextInput>
+// 						<Text style={styles.label}>Descrição</Text>
+// 						<TextInput style={styles.inputDescricao} placeholder='Insira a descrição' value={descricao} onChangeText={setDescricao}></TextInput>
 					
-						{erro != '' &&
-							<Text style={styles.erro}>{erro}</Text>
-						}
+// 						{erro != '' &&
+// 							<Text style={styles.erro}>{erro}</Text>
+// 						}
 
-						<Botao titulo='Adicionar'
-							onPress={cadastrar}
-						 />
+// 						<Botao titulo='Adicionar'
+// 							onPress={cadastrar}
+// 						 />
 
-						<Text style={styles.tituloLista}>Lista</Text>
+// 						<Text style={styles.tituloLista}>Lista</Text>
 
-					</View>
-				}
+// 					</View>
+// 				}
 
-				renderItem={({item}) => <CardAtividade id={item.id} titulo={item.titulo} descricao={item.descricao} status={item.status} onDelete={excluir}/>}
+// 				renderItem={({item}) => <CardAtividade id={item.id} titulo={item.titulo} descricao={item.descricao} status={item.status} onDelete={excluir}/>}
 
 
 
-				> 	
+// 				> 	
 
-			</FlatList>
-		</KeyboardAvoidingView>
-	)
+// 			</FlatList>
+// 		</KeyboardAvoidingView>	
+// 	)
+
+	const Stack = createNativeStackNavigator<RootStackParamList>();
+
+	return (
+		<NavigationContainer>
+			<Stack.Navigator>
+
+				<Stack.Screen 
+					name="Lista"
+					component = {ListaScreen}
+				/>
+
+				<Stack.Screen 
+					name="Detalhe"
+					component = {DetalheScreen}
+				/>
+
+				<Stack.Screen 
+					name="Edicao"
+					component = {EdicaoScreen}
+				/>
+
+				<Stack.Screen 
+					name="Cadastro"
+					component = {CadastroScreen}
+				/>
+
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+
+
+
 }
 
 const styles = StyleSheet.create({
