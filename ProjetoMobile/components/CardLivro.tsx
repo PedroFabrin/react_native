@@ -3,17 +3,17 @@ import { Cores, CoresStatus } from "../models/Cores";
 import { StatusLeitura } from "../models/Livro";
 
 type CardLivroProps = {
-    id: number,
     titulo: string,
     autor: string,
     status: StatusLeitura,
-    onAvancar: (id: number) => void,
-    onExcluir: (id: number) => void,
+    genero: string,
+    anoPublicacao: number,
+    onPress: () => void,
 }
 
-export default function CardLivro({id, titulo, autor, status, onAvancar, onExcluir}: CardLivroProps) {
+export default function CardLivro({titulo, autor, status, genero, anoPublicacao, onPress}: CardLivroProps) {
     return (
-        <View style={styles.card}>
+        <Pressable style={({pressed}) => [styles.card, pressed && styles.cardPressionado]} onPress={onPress}>
             <View style={styles.linhaTopo}>
                 <View style={styles.dados}>
                     <Text style={styles.titulo}>{titulo}</Text>
@@ -27,21 +27,11 @@ export default function CardLivro({id, titulo, autor, status, onAvancar, onExclu
                 </Text>
             </View>
 
-            <View style={styles.acoes}>
-                {
-                    status !== 'Lido' && (
-                        <Pressable style={[styles.botao, styles.botaoAvancar]} onPress={() => onAvancar(id)}>
-                            <Text style={styles.textoAvancar}>
-                                {status === 'Quero ler' ? 'Começar a ler' : 'Marcar como lido'}
-                            </Text>
-                        </Pressable>
-                    )
-                }
-                <Pressable style={styles.botao} onPress={() => onExcluir(id)}>
-                    <Text style={styles.textoExcluir}>Excluir</Text>
-                </Pressable>
+            <View style={styles.rodape}>
+                <Text style={styles.info}>{genero} • {anoPublicacao}</Text>
+                <Text style={styles.verDetalhes}>Ver detalhes ›</Text>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
@@ -58,6 +48,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 6,
         elevation: 2,
+    },
+
+    cardPressionado: {
+        opacity: 0.7,
     },
 
     linhaTopo: {
@@ -92,34 +86,21 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
 
-    acoes: {
+    rodape: {
         flexDirection: 'row',
-        gap: 10,
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: 14,
     },
 
-    botao: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: Cores.borda,
-        backgroundColor: '#FAF6EF',
-        borderRadius: 8,
-        padding: 10,
-        alignItems: 'center',
+    info: {
+        fontSize: 14,
+        color: Cores.textoSuave,
     },
 
-    botaoAvancar: {
-        backgroundColor: Cores.primaria,
-        borderColor: Cores.primaria,
-    },
-
-    textoAvancar: {
+    verDetalhes: {
+        fontSize: 14,
         fontWeight: '700',
-        color: Cores.primariaTexto,
-    },
-
-    textoExcluir: {
-        fontWeight: '700',
-        color: Cores.erro,
+        color: Cores.primaria,
     },
 });

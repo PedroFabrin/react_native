@@ -7,4 +7,17 @@ export type Livro = {
     titulo: string,
     autor: string,
     status: StatusLeitura,
+    genero: string,
+    anoPublicacao: number,
+    paginas: number,
+    paginaAtual: number,
+    sinopse: string,
+    dataConclusao: string | null,
+}
+
+export type Resumo = {
+    total: number,
+    queroLer: number,
+    lendo: number,
+    lidos: number,
 }

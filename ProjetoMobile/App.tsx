@@ -1,83 +1,72 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BarraNavegacao from './components/BarraNavegacao';
 import InicioScreen from './screens/InicioScreen';
 import LivrosScreen from './screens/LivrosScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import MetasScreen from './screens/MetasScreen';
-import { Livro, StatusLeitura } from './models/Livro';
+import DetalhesLivroScreen from './screens/DetalhesLivroScreen';
+import { AbasParamList, RotasParamList } from './models/Navegacao';
 import { Tela } from './models/Tela';
 import { Cores } from './models/Cores';
 
+const Pilha = createNativeStackNavigator<RotasParamList>();
+const Abas = createBottomTabNavigator<AbasParamList>();
+
+const tema = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		background: Cores.fundo,
+		primary: Cores.primaria,
+	},
+};
+
+function NavegacaoAbas() {
+	return (
+		<Abas.Navigator
+			screenOptions={{ headerShown: false, sceneStyle: styles.cena }}
+			tabBar={({state, navigation}) => (
+				<BarraNavegacao
+					telaAtual={state.routeNames[state.index] as Tela}
+					onMudarTela={(tela) => navigation.navigate(tela)}
+				/>
+			)}
+		>
+			<Abas.Screen name="Início" component={InicioScreen} />
+			<Abas.Screen name="Livros" component={LivrosScreen} />
+			<Abas.Screen name="Cadastrar" component={CadastroScreen} />
+			<Abas.Screen name="Metas" component={MetasScreen} />
+		</Abas.Navigator>
+	);
+}
+
 export default function App() {
-
-	const [tela, setTela] = useState<Tela>('Início');
-
-	const [livros, setLivros] = useState<Livro[]>([
-		{
-			id: 1,
-			titulo: 'Dom Casmurro',
-			autor: 'Machado de Assis',
-			status: 'Lido',
-		},
-		{
-			id: 2,
-			titulo: 'O Hobbit',
-			autor: 'J. R. R. Tolkien',
-			status: 'Lendo',
-		},
-		{
-			id: 3,
-			titulo: 'Código Limpo',
-			autor: 'Robert C. Martin',
-			status: 'Quero ler',
-		},
-	]);
-
-	function cadastrar(titulo: string, autor: string, status: StatusLeitura) {
-		const novoLivro: Livro = {
-			id: Date.now(),
-			titulo: titulo,
-			autor: autor,
-			status: status,
-		};
-
-		setLivros([
-			...livros,
-			novoLivro
-		]);
-	}
-
-	function avancarStatus(id: number) {
-		const novaLista = livros.map((livro) => {
-			if (livro.id !== id) {
-				return livro;
-			}
-			const proximo: StatusLeitura = livro.status === 'Quero ler' ? 'Lendo' : 'Lido';
-			return { ...livro, status: proximo };
-		});
-		setLivros(novaLista);
-	}
-
-	function excluir(id: number) {
-		const novaLista = livros.filter((livro) => livro.id !== id);
-		setLivros(novaLista);
-	}
-
 	return (
 		<View style={styles.container}>
 			<StatusBar style="dark" />
 
 			<View style={styles.app}>
-				<View style={styles.conteudo}>
-					{tela === 'Início' && <InicioScreen livros={livros} onIrPara={setTela} />}
-					{tela === 'Livros' && <LivrosScreen livros={livros} onAvancar={avancarStatus} onExcluir={excluir} />}
-					{tela === 'Cadastrar' && <CadastroScreen onCadastrar={cadastrar} />}
-					{tela === 'Metas' && <MetasScreen />}
-				</View>
-
-				<BarraNavegacao telaAtual={tela} onMudarTela={setTela} />
+				<NavigationContainer theme={tema}>
+					<Pilha.Navigator
+						screenOptions={{
+							headerStyle: { backgroundColor: Cores.fundo },
+							headerTintColor: Cores.primaria,
+							headerShadowVisible: false,
+							contentStyle: { backgroundColor: Cores.fundo },
+						}}
+					>
+						<Pilha.Screen name="Abas" component={NavegacaoAbas} options={{ headerShown: false }} />
+						<Pilha.Screen
+							name="DetalhesLivro"
+							component={DetalhesLivroScreen}
+							options={({route}) => ({ title: route.params.titulo })}
+						/>
+					</Pilha.Navigator>
+				</NavigationContainer>
 			</View>
 		</View>
 	);
@@ -96,8 +85,8 @@ const styles = StyleSheet.create({
 		maxWidth: 640,
 	},
 
-	conteudo: {
-		flex: 1,
+	cena: {
+		backgroundColor: Cores.fundo,
 		paddingTop: 56,
 	},
 });

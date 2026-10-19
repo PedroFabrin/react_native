@@ -6,9 +6,10 @@ type CampoTextoProps = {
     placeholder?: string,
     valor: string,
     onChangeText: (texto: string) => void,
+    onSubmitEditing?: () => void,
 }
 
-export default function CampoTexto({rotulo, placeholder, valor, onChangeText}: CampoTextoProps) {
+export default function CampoTexto({rotulo, placeholder, valor, onChangeText, onSubmitEditing}: CampoTextoProps) {
     return (
         <View>
             <Text style={styles.rotulo}>{rotulo}</Text>
@@ -18,6 +19,8 @@ export default function CampoTexto({rotulo, placeholder, valor, onChangeText}: C
                 placeholderTextColor={Cores.textoSuave}
                 value={valor}
                 onChangeText={onChangeText}
+                onSubmitEditing={onSubmitEditing}
+                returnKeyType={onSubmitEditing ? 'search' : 'default'}
             />
         </View>
     );

@@ -7,31 +7,22 @@ import Botao from "../components/Botao";
 import { Cores } from "../models/Cores";
 import { STATUS_LEITURA, StatusLeitura } from "../models/Livro";
 
-type CadastroScreenProps = {
-    onCadastrar: (titulo: string, autor: string, status: StatusLeitura) => void,
-}
-
-export default function CadastroScreen({onCadastrar}: CadastroScreenProps) {
+export default function CadastroScreen() {
     const [titulo, setTitulo] = useState('');
     const [autor, setAutor] = useState('');
     const [status, setStatus] = useState<StatusLeitura>('Quero ler');
     const [erro, setErro] = useState('');
-    const [sucesso, setSucesso] = useState('');
+    const [aviso, setAviso] = useState('');
 
     function cadastrar() {
         if (titulo.trim() === '' || autor.trim() === '') {
-            setSucesso('');
+            setAviso('');
             setErro('Preencha o título e o autor');
             return;
         }
 
-        onCadastrar(titulo.trim(), autor.trim(), status);
-
-        setTitulo('');
-        setAutor('');
-        setStatus('Quero ler');
         setErro('');
-        setSucesso('Livro cadastrado com sucesso!');
+        setAviso('O envio do cadastro para a API (POST /livros) será implementado no Checkpoint 3.');
     }
 
     return (
@@ -39,18 +30,20 @@ export default function CadastroScreen({onCadastrar}: CadastroScreenProps) {
             <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
                 <Cabecalho titulo="Novo Livro" subtitulo="Adicione um livro à sua biblioteca" />
 
+                <Text style={styles.selo}>Disponível no Checkpoint 3</Text>
+
                 <CampoTexto
                     rotulo="Título"
                     placeholder="Insira o título"
                     valor={titulo}
-                    onChangeText={(texto) => { setTitulo(texto); setSucesso(''); }}
+                    onChangeText={(texto) => { setTitulo(texto); setAviso(''); }}
                 />
 
                 <CampoTexto
                     rotulo="Autor"
                     placeholder="Insira o autor"
                     valor={autor}
-                    onChangeText={(texto) => { setAutor(texto); setSucesso(''); }}
+                    onChangeText={(texto) => { setAutor(texto); setAviso(''); }}
                 />
 
                 <Text style={styles.rotulo}>Status de leitura</Text>
@@ -61,7 +54,7 @@ export default function CadastroScreen({onCadastrar}: CadastroScreenProps) {
                 />
 
                 {erro !== '' && <Text style={styles.erro}>{erro}</Text>}
-                {sucesso !== '' && <Text style={styles.sucesso}>{sucesso}</Text>}
+                {aviso !== '' && <Text style={styles.aviso}>{aviso}</Text>}
 
                 <Botao titulo="Adicionar" onPress={cadastrar} />
             </ScrollView>
@@ -93,9 +86,23 @@ const styles = StyleSheet.create({
         color: Cores.erro,
     },
 
-    sucesso: {
+    aviso: {
         marginTop: 12,
         fontWeight: '600',
-        color: Cores.sucesso,
+        color: '#92400E',
+    },
+
+    selo: {
+        fontSize: 13,
+        fontWeight: '700',
+        color: '#92400E',
+        backgroundColor: '#FEF3C7',
+        alignSelf: 'flex-start',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 999,
+        overflow: 'hidden',
+        marginTop: -8,
+        marginBottom: 8,
     },
 });

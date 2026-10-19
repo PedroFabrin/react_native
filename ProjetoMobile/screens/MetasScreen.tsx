@@ -1,28 +1,70 @@
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Cabecalho from "../components/Cabecalho";
+import Carregando from "../components/Carregando";
+import MensagemErro from "../components/MensagemErro";
+import MensagemVazia from "../components/MensagemVazia";
+import BarraProgresso from "../components/BarraProgresso";
 import { Cores } from "../models/Cores";
-
-const FUNCIONALIDADES_PREVISTAS = [
-    'Definir meta anual de livros lidos',
-    'Acompanhar o progresso por páginas',
-    'Avaliar livros com notas e comentários',
-    'Salvar os dados no dispositivo',
-];
+import { Meta } from "../models/Meta";
+import { listarMetas } from "../services/metasService";
 
 export default function MetasScreen() {
-    return (
-        <ScrollView contentContainerStyle={styles.conteudo}>
-            <Cabecalho titulo="Metas de Leitura" subtitulo="Acompanhe seus objetivos" />
+    const [metas, setMetas] = useState<Meta[]>([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState('');
 
-            <View style={styles.card}>
-                <Text style={styles.selo}>Em desenvolvimento</Text>
-                <Text style={styles.titulo}>Funcionalidades previstas</Text>
+    async function carregarMetas() {
+        setCarregando(true);
+        setErro('');
+        try {
+            const dados = await listarMetas();
+            setMetas(dados);
+        } catch (e) {
+            setErro(e instanceof Error ? e.message : 'Erro inesperado.');
+        } finally {
+            setCarregando(false);
+        }
+    }
+
+    useEffect(() => {
+        carregarMetas();
+    }, []);
+
+    function renderizarConteudo() {
+        if (carregando) {
+            return <Carregando mensagem="Carregando metas..." />;
+        }
+        if (erro !== '') {
+            return <MensagemErro mensagem={erro} onTentarNovamente={carregarMetas} />;
+        }
+        if (metas.length === 0) {
+            return <MensagemVazia texto="Nenhuma meta de leitura cadastrada" />;
+        }
+
+        return metas.map((meta) => (
+            <View key={meta.id} style={styles.card}>
+                <View style={styles.linhaTopo}>
+                    <Text style={styles.ano}>{meta.ano}</Text>
+                    <Text style={styles.percentual}>{meta.percentual}%</Text>
+                </View>
+                <BarraProgresso percentual={meta.percentual} />
+                <Text style={styles.detalhe}>
+                    {meta.livrosLidos} de {meta.quantidadeLivros} livros lidos
+                </Text>
                 {
-                    FUNCIONALIDADES_PREVISTAS.map((item) => (
-                        <Text key={item} style={styles.item}>• {item}</Text>
-                    ))
+                    meta.livrosLidos >= meta.quantidadeLivros && (
+                        <Text style={styles.concluida}>Meta concluída!</Text>
+                    )
                 }
             </View>
+        ));
+    }
+
+    return (
+        <ScrollView contentContainerStyle={styles.conteudo}>
+            <Cabecalho titulo="Metas de Leitura" subtitulo="Acompanhe seus objetivos anuais" />
+            {renderizarConteudo()}
         </ScrollView>
     );
 }
@@ -39,31 +81,36 @@ const styles = StyleSheet.create({
         borderColor: Cores.borda,
         borderRadius: 12,
         padding: 18,
+        marginBottom: 14,
+        gap: 10,
     },
 
-    selo: {
-        fontSize: 13,
-        fontWeight: '700',
-        color: '#92400E',
-        backgroundColor: '#FEF3C7',
-        alignSelf: 'flex-start',
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 999,
-        overflow: 'hidden',
-        marginBottom: 12,
+    linhaTopo: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
     },
 
-    titulo: {
-        fontSize: 18,
-        fontWeight: '700',
-        marginBottom: 10,
+    ano: {
+        fontSize: 22,
+        fontWeight: '800',
         color: Cores.texto,
     },
 
-    item: {
+    percentual: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: Cores.primaria,
+    },
+
+    detalhe: {
         fontSize: 15,
-        lineHeight: 24,
         color: Cores.textoSuave,
+    },
+
+    concluida: {
+        fontSize: 14,
+        fontWeight: '700',
+        color: Cores.sucesso,
     },
 });
