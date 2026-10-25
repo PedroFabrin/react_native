@@ -6,23 +6,54 @@ import SeletorOpcoes from "../components/SeletorOpcoes";
 import Botao from "../components/Botao";
 import { Cores } from "../models/Cores";
 import { STATUS_LEITURA, StatusLeitura } from "../models/Livro";
+import { cadastrarLivro } from "../services/livrosService";
 
 export default function CadastroScreen() {
     const [titulo, setTitulo] = useState('');
     const [autor, setAutor] = useState('');
+    const [genero, setGenero] = useState('');
+    const [ano, setAno] = useState('');
+    const [paginas, setPaginas] = useState('');
     const [status, setStatus] = useState<StatusLeitura>('Quero ler');
+    const [salvando, setSalvando] = useState(false);
     const [erro, setErro] = useState('');
-    const [aviso, setAviso] = useState('');
+    const [sucesso, setSucesso] = useState('');
 
-    function cadastrar() {
-        if (titulo.trim() === '' || autor.trim() === '') {
-            setAviso('');
-            setErro('Preencha o título e o autor');
+    async function cadastrar() {
+        setSucesso('');
+
+        if (titulo.trim() === '' || autor.trim() === '' || genero.trim() === '' || ano === '' || paginas === '') {
+            setErro('Preencha todos os campos');
             return;
         }
 
-        setErro('');
-        setAviso('O envio do cadastro para a API (POST /livros) será implementado no Checkpoint 3.');
+        try {
+            setSalvando(true);
+            setErro('');
+
+            await cadastrarLivro({
+                titulo: titulo,
+                autor: autor,
+                genero: genero,
+                status: status,
+                anoPublicacao: Number(ano),
+                paginas: Number(paginas),
+                paginaAtual: 0,
+                sinopse: '',
+            });
+
+            setTitulo('');
+            setAutor('');
+            setGenero('');
+            setAno('');
+            setPaginas('');
+            setStatus('Quero ler');
+            setSucesso('Livro cadastrado com sucesso!');
+        } catch (e) {
+            setErro(e instanceof Error ? e.message : 'Erro inesperado.');
+        } finally {
+            setSalvando(false);
+        }
     }
 
     return (
@@ -30,21 +61,11 @@ export default function CadastroScreen() {
             <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
                 <Cabecalho titulo="Novo Livro" subtitulo="Adicione um livro à sua biblioteca" />
 
-                <Text style={styles.selo}>Disponível no Checkpoint 3</Text>
-
-                <CampoTexto
-                    rotulo="Título"
-                    placeholder="Insira o título"
-                    valor={titulo}
-                    onChangeText={(texto) => { setTitulo(texto); setAviso(''); }}
-                />
-
-                <CampoTexto
-                    rotulo="Autor"
-                    placeholder="Insira o autor"
-                    valor={autor}
-                    onChangeText={(texto) => { setAutor(texto); setAviso(''); }}
-                />
+                <CampoTexto rotulo="Título" placeholder="Insira o título" valor={titulo} onChangeText={setTitulo} />
+                <CampoTexto rotulo="Autor" placeholder="Insira o autor" valor={autor} onChangeText={setAutor} />
+                <CampoTexto rotulo="Gênero" placeholder="Insira o gênero" valor={genero} onChangeText={setGenero} />
+                <CampoTexto rotulo="Ano de publicação" placeholder="Ex.: 1937" valor={ano} onChangeText={setAno} />
+                <CampoTexto rotulo="Páginas" placeholder="Total de páginas" valor={paginas} onChangeText={setPaginas} />
 
                 <Text style={styles.rotulo}>Status de leitura</Text>
                 <SeletorOpcoes
@@ -54,9 +75,9 @@ export default function CadastroScreen() {
                 />
 
                 {erro !== '' && <Text style={styles.erro}>{erro}</Text>}
-                {aviso !== '' && <Text style={styles.aviso}>{aviso}</Text>}
+                {sucesso !== '' && <Text style={styles.sucesso}>{sucesso}</Text>}
 
-                <Botao titulo="Adicionar" onPress={cadastrar} />
+                <Botao titulo={salvando ? 'Salvando...' : 'Adicionar'} onPress={cadastrar} />
             </ScrollView>
         </KeyboardAvoidingView>
     );
@@ -86,23 +107,9 @@ const styles = StyleSheet.create({
         color: Cores.erro,
     },
 
-    aviso: {
+    sucesso: {
         marginTop: 12,
         fontWeight: '600',
-        color: '#92400E',
-    },
-
-    selo: {
-        fontSize: 13,
-        fontWeight: '700',
-        color: '#92400E',
-        backgroundColor: '#FEF3C7',
-        alignSelf: 'flex-start',
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 999,
-        overflow: 'hidden',
-        marginTop: -8,
-        marginBottom: 8,
+        color: Cores.sucesso,
     },
 });

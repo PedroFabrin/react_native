@@ -6,13 +6,18 @@ export const API_URL = `http://${host}:8000`;
 
 const TEMPO_LIMITE_MS = 15000;
 
-export async function get<T>(caminho: string): Promise<T> {
+export async function requisicao<T>(caminho: string, metodo: string = 'GET', corpo?: object): Promise<T> {
     const controle = new AbortController();
     const temporizador = setTimeout(() => controle.abort(), TEMPO_LIMITE_MS);
 
     let resposta: Response;
     try {
-        resposta = await fetch(`${API_URL}${caminho}`, { signal: controle.signal });
+        resposta = await fetch(`${API_URL}${caminho}`, {
+            method: metodo,
+            headers: { 'Content-Type': 'application/json' },
+            body: corpo ? JSON.stringify(corpo) : undefined,
+            signal: controle.signal,
+        });
     } catch {
         if (controle.signal.aborted) {
             throw new Error('O servidor demorou demais para responder. Tente novamente.');
@@ -25,7 +30,7 @@ export async function get<T>(caminho: string): Promise<T> {
     const dados = await resposta.json().catch(() => null);
 
     if (!resposta.ok) {
-        throw new Error(dados?.mensagem ?? `Erro ${resposta.status} ao consultar o servidor.`);
+        throw new Error(dados?.mensagem ?? `Erro ${resposta.status} na comunicação com o servidor.`);
     }
 
     return dados as T;

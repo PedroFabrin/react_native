@@ -9,6 +9,7 @@ import LivrosScreen from './screens/LivrosScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import MetasScreen from './screens/MetasScreen';
 import DetalhesLivroScreen from './screens/DetalhesLivroScreen';
+import EdicaoScreen from './screens/EdicaoScreen';
 import { AbasParamList, RotasParamList } from './models/Navegacao';
 import { Tela } from './models/Tela';
 import { Cores } from './models/Cores';
@@ -64,6 +65,11 @@ export default function App() {
 							name="DetalhesLivro"
 							component={DetalhesLivroScreen}
 							options={({route}) => ({ title: route.params.titulo })}
+						/>
+						<Pilha.Screen
+							name="EditarLivro"
+							component={EdicaoScreen}
+							options={{ title: 'Editar livro' }}
 						/>
 					</Pilha.Navigator>
 				</NavigationContainer>

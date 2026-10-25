@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import Cabecalho from "../components/Cabecalho";
 import Carregando from "../components/Carregando";
 import MensagemErro from "../components/MensagemErro";
@@ -27,9 +28,11 @@ export default function MetasScreen() {
         }
     }
 
-    useEffect(() => {
-        carregarMetas();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            carregarMetas();
+        }, [])
+    );
 
     function renderizarConteudo() {
         if (carregando) {

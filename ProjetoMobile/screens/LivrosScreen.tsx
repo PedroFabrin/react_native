@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Cabecalho from "../components/Cabecalho";
 import CardLivro from "../components/CardLivro";
 import CampoTexto from "../components/CampoTexto";
@@ -39,9 +39,11 @@ export default function LivrosScreen() {
         }
     }
 
-    useEffect(() => {
-        carregarLivros();
-    }, [filtro, busca]);
+    useFocusEffect(
+        useCallback(() => {
+            carregarLivros();
+        }, [filtro, busca])
+    );
 
     function renderizarSemItens() {
         if (carregando) {

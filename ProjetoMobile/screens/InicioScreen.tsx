@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Cabecalho from "../components/Cabecalho";
 import CardResumo from "../components/CardResumo";
 import Botao from "../components/Botao";
@@ -37,9 +37,11 @@ export default function InicioScreen() {
         }
     }
 
-    useEffect(() => {
-        carregarDados();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            carregarDados();
+        }, [])
+    );
 
     function renderizarConteudo() {
         if (carregando) {

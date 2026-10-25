@@ -21,6 +21,17 @@ class LivroSchema(SchemaBase):
     data_conclusao: date | None
 
 
+class LivroEntradaSchema(SchemaBase):
+    titulo: str
+    autor: str
+    status: str
+    genero: str
+    ano_publicacao: int
+    paginas: int
+    pagina_atual: int = 0
+    sinopse: str = ""
+
+
 class ResumoSchema(SchemaBase):
     total: int
     quero_ler: int

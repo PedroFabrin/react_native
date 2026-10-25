@@ -11,6 +11,7 @@ export type AbasParamList = {
 export type RotasParamList = {
     Abas: NavigatorScreenParams<AbasParamList>,
     DetalhesLivro: { id: number, titulo: string },
+    EditarLivro: { id: number },
 }
 
 export type Navegacao = NativeStackNavigationProp<RotasParamList>;

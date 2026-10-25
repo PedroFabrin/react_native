@@ -15,6 +15,8 @@ export type Livro = {
     dataConclusao: string | null,
 }
 
+export type LivroEntrada = Omit<Livro, 'id' | 'dataConclusao'>;
+
 export type Resumo = {
     total: number,
     queroLer: number,
